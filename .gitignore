@@ -1,0 +1,7 @@
+dist/
+test-output/
+*.log
+*.bak
+settings.json
+Desktop.ini
+.vs/

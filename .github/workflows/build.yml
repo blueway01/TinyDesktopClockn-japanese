@@ -1,0 +1,27 @@
+name: ビルドとテスト
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ビルド
+        shell: powershell
+        run: ./build.ps1
+      - name: 単体テスト
+        shell: powershell
+        run: |
+          $process = Start-Process -FilePath ./dist/TinyDesktopClockn.exe -ArgumentList '--self-test' -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "単体テスト失敗: $($process.ExitCode)" }
+      - name: 統合テスト
+        shell: powershell
+        run: ./test-integration.ps1
+      - name: 実行ファイル
+        uses: actions/upload-artifact@v4
+        with:
+          name: TinyDesktopClockn-日本語版
+          path: dist/TinyDesktopClockn.exe
