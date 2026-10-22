@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $project = Split-Path -Parent $MyInvocation.MyCommand.Path
 $release = Join-Path $project 'dist'
 New-Item -ItemType Directory -Path $release -Force | Out-Null
