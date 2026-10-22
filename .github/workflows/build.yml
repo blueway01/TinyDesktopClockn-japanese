@@ -19,7 +19,10 @@ jobs:
           if ($process.ExitCode -ne 0) { throw "単体テスト失敗: $($process.ExitCode)" }
       - name: 統合テスト
         shell: pwsh
-        run: ./test-integration.ps1
+        run: |
+          # 新規のCIユーザーでは自動起動用キーが未作成のため、空のキーだけ準備する。
+          New-Item -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -Force | Out-Null
+          ./test-integration.ps1
       - name: 実行ファイル
         uses: actions/upload-artifact@v5
         with:
